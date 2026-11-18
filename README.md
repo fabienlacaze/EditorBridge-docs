@@ -17,7 +17,7 @@ We wrote it to let scripts and coding agents compile, test and inspect our own g
 - Console commands, CVars, project settings (.ini), Python scripts.
 - Actors: list, read and change properties, select.
 
-46 commands in total. They are all described in `Docs/EditorBridge_Guide.md`, with their arguments and what they return.
+46 commands in total. Documentation: [Docs/README.md](Docs/README.md) (getting started, protocol, permissions, every command with an example, troubleshooting).
 
 ## Example
 
