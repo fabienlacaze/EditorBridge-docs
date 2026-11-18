@@ -1117,10 +1117,26 @@ Answer:
 
 Explains why the editor refuses to write to a folder (allow and deny lists).
 
-No arguments.
+| Argument | Type | Required | Description |
+|---|---|---|---|
+| `test_path` | string | no | Content path to test. Default `/Game/`. |
 
 ```json
-{"id": "1", "command": "inspect_writable_folders", "args": {}}
+{"id": "1", "command": "inspect_writable_folders", "args": {"test_path": "/Game/UI/"}}
+```
+
+Answer:
+
+```json
+{
+  "id": "1",
+  "status": "ok",
+  "message": "...",
+  "data": {
+    "testPath": "/Game/UI/",
+    "testPathPasses": true
+  }
+}
 ```
 
 ### `request_close`

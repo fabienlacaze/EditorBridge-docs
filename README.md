@@ -1,51 +1,61 @@
 # EditorBridge
 
-Editor plugin for Unreal Engine 5.7 (Win64). It lets an external program control the editor by writing a JSON file in
-`Saved/EditorBridge/` and reading the JSON answer the editor writes back.
+**Let your AI assistant work inside the Unreal Editor.**
 
-We wrote it to let scripts and coding agents compile, test and inspect our own game without anyone clicking in the editor.
+Coding assistants such as Claude Code, Cursor or Codex can edit your C++, but they cannot press Compile, play the game or look
+at the screen. EditorBridge gives them those hands: 46 editor actions they can call themselves while they talk with you.
 
-## What it does
-
-- Live Coding: start a compile, get the result and the compiler errors.
-- Saving: save all modified packages without dialogs, list unsaved packages, fix up redirectors.
-- Logs: read the Output Log, or only the lines added since the last call.
-- Play In Editor: start, stop, screenshot, move the player pawn, list what the camera sees.
-- Input: mouse clicks (left, right, double, drag, wheel) and keyboard input sent to the game viewport.
-- Screenshots: editor or PIE viewport, timed sequences with an optional contact sheet, asset thumbnails.
-- Import: FBX, textures, sounds; create a user-defined enum.
-- Console commands, CVars, project settings (.ini), Python scripts.
-- Actors: list, read and change properties, select.
-
-46 commands in total. Documentation: [Docs/README.md](Docs/README.md) (getting started, protocol, permissions, every command with an example, troubleshooting).
-
-## Example
-
-Request, written to `Saved/EditorBridge/editor_request.json`:
-
-```json
-{ "id": "1", "command": "trigger_live_coding", "args": {} }
+```mermaid
+flowchart LR
+    A[You] -- "Compile and fix the errors" --> B[AI assistant]
+    B -- calls trigger_live_coding --> C[Unreal Editor + EditorBridge]
+    C -- result + compiler errors --> B
+    B -- edits the code, compiles again --> C
 ```
 
-Answer, written by the editor to `Saved/EditorBridge/editor_response.json`:
+## What you can ask
 
-```json
-{ "id": "1", "status": "ok", "message": "Live Coding succeeded", "data": { "result": "succeeded", "duration_seconds": 14.2, "errors": "" } }
-```
+- *"Compile the project and fix the errors."*
+- *"Start the game, wait 5 seconds, take a screenshot and tell me what you see."*
+- *"Click the Options button of the main menu and check that the settings panel opens."*
+- *"Import C:/Art/crate.fbx into /Game/Props and generate collision."*
+- *"Read the last 200 lines of the log and summarise the warnings."*
 
-## Permissions
+## Get started
 
-Commands that run Python, change project settings or close the editor can be turned off one family at a time in
-Window > Dev Tools > Editor Bridge, or in `Saved/EditorBridge/permissions.json`.
+1. Copy `EditorBridge` into your project's `Plugins` folder (or install it from Fab) and open the project.
+2. Connect your assistant (one command for Claude Code, a few lines of settings for Claude Desktop, Cursor or Codex):
+   [Docs/AI-Assistants.md](Docs/AI-Assistants.md).
+3. Ask.
 
-## Limits
+## What it can do
 
-- Windows only. Popup handling uses Win32.
-- One request at a time; the editor checks for a new request every 1.5 seconds.
-- Live Coding cannot apply header changes such as new class members. Those still need a full build.
+| Area | Commands |
+|---|---|
+| Build | Live Coding with the compiler errors |
+| Save and logs | save without dialogs, unsaved packages, Output Log |
+| Play In Editor | start, stop, screenshot, move the player, list what the camera sees |
+| Mouse and keyboard | clicks, drags, mouse wheel and key presses sent to the game |
+| Screenshots | editor or game, timed sequences with a contact sheet |
+| Import | FBX, textures, sounds |
+| Settings and scripts | console commands, CVars, project settings, Python |
+| Level | list actors, read and change their properties |
+
+Every command, with its arguments and an example: [Docs/Commands.md](Docs/Commands.md).
+
+## Without an assistant
+
+Any script can use EditorBridge too: write a small JSON request in `Saved/EditorBridge/`, read the JSON answer. See
+[Getting Started](Docs/Getting-Started.md).
+
+## Safety
+
+Each family of commands (Python, closing the editor, project settings...) can be switched off in
+**Window > Dev Tools > Editor Bridge**. EditorBridge only reads files in your project's `Saved` folder; it opens no network port
+and is not included in packaged games.
 
 ## Requirements
 
-Unreal Engine 5.7, Windows 64-bit, Python Editor Script Plugin (part of the engine, enabled automatically).
+Unreal Engine 5.7, Windows 64-bit. For assistants: Python 3.9 or newer.
 
-Copyright (c) 2026 Fabien Lacaze. See `LICENSE.md`.
+Documentation: [Docs/README.md](Docs/README.md). Copyright (c) 2026 Fabien Lacaze, see `LICENSE.md`.

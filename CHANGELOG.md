@@ -8,6 +8,9 @@
 - Permissions panel (Window > Dev Tools > Editor Bridge) and `permissions.json`; new `save_exclude` list for `save_all_dirty`.
 - Documentation split into pages: Docs/README.md (getting started, protocol, permissions, commands, troubleshooting).
 - Console command `EditorBridge.Open` opens the panel.
+- MCP server (`Mcp/bridge_mcp.py`, Python standard library only): use EditorBridge from Claude Code, Claude Desktop, Cursor
+  or OpenAI Codex. See Docs/AI-Assistants.md.
+- New panel: status with the last request, permissions with a short explanation, Documentation and Open folder buttons.
 
 ## 1.0.0 (2026-04-12)
 
